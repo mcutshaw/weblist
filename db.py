@@ -19,25 +19,25 @@ class list_database:
 
         if(('categories',) not in tables): 
             self.execute('''CREATE TABLE categories
-                            (name TEXT,
-                            num INTEGER);''')
+                            (name TEXT PRIMARY KEY,
+                            num INTEGER NOT NULL);''')
 
         if(('notes',) not in tables): 
             self.execute('''CREATE TABLE notes
-                            (id INTEGER,
-                            content TEXT,
-                            created_date TEXT,
-                            completed_date TEXT,
-                            hidden_date TEXT,
-                            completed TEXT,
-                            hidden TEXT,
-                            category TEXT,
-                            importance INTEGER);''')
+                            (id INTEGER PRIMARY KEY,
+                            content TEXT NOT NULL,
+                            created_date DATE NOT NULL,
+                            completed_date DATE,
+                            hidden_date DATE,
+                            completed BOOLEAN CHECK(completed IN("True","False")),
+                            hidden BOOLEAN CHECK(hidden IN("True","False")),
+                            category TEXT NOT NULL,
+                            importance INTEGER NOT NULL);''')
 
         if(('accounts',) not in tables):
             self.execute('''CREATE TABLE accounts
-                            (username TEXT,
-                            password TEXT);''')
+                            (username TEXT PRIMARY KEY,
+                            password TEXT NOT NULL);''')
 
             print("Create a master user.")
             username = input("Username: ")
@@ -88,3 +88,4 @@ class list_database:
     def del_user(self,username):
         self.cur.execute("DELETE FROM accounts WHERE username=?",(username,))
         self.conn.commit()
+list_database('weblist.conf')
