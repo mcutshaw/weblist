@@ -1,0 +1,83 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>
+        Manager
+    </title>
+</head>
+<body>
+    <nav>
+        <a href="/postlist">Reader</a> |
+        <a href="/postlist/manager">Manger</a> 
+    </nav> 
+    <h1>
+        Manager
+    </h1>
+    <h3>
+        New User
+    </h3>
+    <form action={{ip}} method="post">
+        <table class="table table-striped">
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Role</th>
+                <th>Logs</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="username"></td>
+                <td><input type="password" name="password"></td>
+                <td><input type="text" name="role"></td>
+                <td><input type="text" name="logs"></td>
+                <td><button type="submit" class="btn" name="submit" value="submit">Submit</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <h3>
+        Current Users
+    </h3>
+
+    <form action={{ip}} method="post">
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Password
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                    Logs</th>
+                    <th>Delete</th>       
+                </tr>
+                {% for dat in dats %}
+                <tr>
+                    <td>
+                        {{dat[0]}}
+                    </td>
+                    <td>
+                        {{dat[1]}}
+                    </td>
+                    <td>
+                        {{dat[2]}}
+                    </td>
+                    <td>
+                        {{dat[3]}}
+                    </td>
+                    <td>
+                        <button type="submit" class="btn" name="delete" value="{{dat[0]}}">Delete</button>
+                    </td>
+                    
+                    
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </body>
+    </html>
+    

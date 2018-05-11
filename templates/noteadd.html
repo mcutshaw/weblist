@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <title>
+        Add Note
+    </title>
+</head>
+
+<body>
+        <nav>
+                <a href="/">Site </a>|
+                <a href="/weblist"> List </a>|
+                <a href="/weblist/catadd"> Categories </a> |
+                <a href="/weblist/noteadd"> Add Note</a>
+            </nav>
+    <h1>
+        Add Note
+    </h1>
+
+    <form action={{ip}} method="post">
+        <table class="table table-striped">
+            <tr>
+                <th>Category</th>
+                <th>Content</th>
+                <th>Importance</th>
+                <th>Hidden</th>
+
+                <th></th>
+
+            </tr>
+            <tr>
+                <td>
+                        <select name="category">
+                                {% for name in names %}
+                                <option value={{name[0]}}>{{name[0]}}</option>
+                                {% endfor %}
+                            </select>
+                </td>
+                <td>
+                    <input type="text" name="content" style="width:100%" autocomplete="off">
+                </td>
+                <td>
+                    <input type="text" name="importance" size="2" autocomplete="off">
+                </td>
+                <td>
+                    <input type="checkbox" name="hidden" id="hidden" >
+                    <input type="date" id="date" name="date">
+                    <script>
+                        $('#date').hide();
+                    $('#hidden').click(function() {
+                        $('#date')[this.checked ? "show" : "hide"]();
+                      });</script>
+                </td>
+                
+
+                <td>
+                    <button type="submit" class="btn" name="submit" value="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+
+</html>

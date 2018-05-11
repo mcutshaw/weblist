@@ -24,8 +24,7 @@ class list_database:
 
         if(('notes',) not in tables): 
             self.execute('''CREATE TABLE notes
-                            (id INTEGER PRIMARY KEY,
-                            content TEXT NOT NULL,
+                            (content TEXT NOT NULL,
                             created_date DATE NOT NULL,
                             completed_date DATE,
                             hidden_date DATE,
@@ -68,16 +67,15 @@ class list_database:
             print("Database Error!")
 
     def execute(self,command):
-        try:
-            self.cur.execute(command)
-            self.conn.commit()
-        except:
-            print("Database Error!")
+        self.cur.execute(command)
+        self.conn.commit()
+        return self.cur.fetchall()
 
     def executevar(self,command,operands):
         try:
             self.cur.execute(command,operands)
             self.conn.commit()
+            return self.cur.fetchall()
         except:
             print("Database Error!")
 

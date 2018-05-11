@@ -1,0 +1,77 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <title>
+        The List
+    </title>
+</head>
+
+<body>
+    <nav>
+        <a href="/">Site </a>|
+        <a href="/weblist"> List </a>|
+        <a href="/weblist/catadd"> Categories </a> |
+        <a href="/weblist/noteadd"> Add Note</a>
+    </nav>
+    <h1>
+        The List
+    </h1>
+    <form action={{ip}} id=selector method="post">
+        <select name="action" id="action" onchange="this.form.submit()">
+            <option value="All" {% if selected=="All" %} selected="selected" {% endif %}>All</option>
+            {% for name in names %}
+            <option value={{name[0]}} {% if selected==name[0] %} selected="selected" {% endif %}>{{name[0]}}</option>
+            {% endfor %}
+            <option value="Hidden" disabled="True">----------</option>
+            <option value="Hidden" {% if selected=="Hidden" %} selected="selected" {% endif %}>Hidden</option>
+            <option value="Completed"  {% if selected=="Completed" %} selected="selected" {% endif %}>Completed</option>
+        </select>
+        <noscript>
+            <button action={{ip}} method="post">Submit</button>
+        </noscript>
+
+    </form>
+    {% if dats != [] %}
+
+    <table class="table table-striped table-sm">
+        <tr>
+            <th>Text</th>
+            {% if detail == True %}
+            <th>asd</th>
+                    {% endif %}
+            <th>Importance</th>
+                            <th>Remove</th>
+        </tr>
+
+        {% for dat in dats %}
+        <tr>
+            <td>
+                {{dat[0]}}
+            </td>
+            {% if detail == True %}
+            <td>
+                asd
+            </td>
+            {% endif %}
+            <td>
+                {{dat[1]}}
+            </td>
+            <td>
+                <form action="{{ip}}" method="post">
+                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post">Delete</button>
+                    <input name="action" hidden="True" value="{{selected}}">
+                </form>
+                <form action="{{ip}}" method="post">
+                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post">Complete</button>
+                        <input name="action" hidden="True" value="{{selected}}">
+                </form>
+            </td>
+        </tr>
+        {% endfor %} {% endif %}
+    </table>
+</body>
+
+</html>
