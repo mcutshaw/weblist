@@ -33,7 +33,7 @@ def delnote(rowid):
     web_db.executevar("DELETE FROM notes WHERE rowid=?",(rowid,))
 
 def completenote(rowid):
-    web_db.executevar("UPDATE notes SET completed=? WHERE rowid=?",("True",rowid))
+    web_db.executevar("UPDATE notes SET completed=? SET completed_date=strftime('%Y-%m-%d','now','localtime') WHERE rowid=?",("True",rowid))
 
 def getnotes(cat):
     unhidenotes()
