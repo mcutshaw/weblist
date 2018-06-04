@@ -28,12 +28,17 @@ def createcat(name):
 
 def delcat(name):
     web_db.executevar("DELETE FROM categories WHERE name=?",(name,))
+    web_db.executevar("DELETE FROM notes WHERE category=?",(name,))
 
 def delnote(rowid):
+    web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=?)",(rowid,))#HERE
     web_db.executevar("DELETE FROM notes WHERE rowid=?",(rowid,))
 
+
 def completenote(rowid):
-    web_db.executevar("UPDATE notes SET completed=? SET completed_date=strftime('%Y-%m-%d','now','localtime') WHERE rowid=?",("True",rowid))
+    web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=? and completed='False')",(rowid,))
+    web_db.executevar("UPDATE notes SET completed=?,completed_date=strftime('%Y-%m-%d','now','localtime') WHERE rowid=?",("True",rowid))
+
 
 def getnotes(cat):
     unhidenotes()
@@ -104,7 +109,7 @@ def noteadd():
             web_db.executevar("INSERT INTO notes VALUES(?,?,NULL,?,'False','True',?,?)",(request.form['content'],datetime.now().strftime('%Y-%m-%d'),request.form['date'],request.form['category'],request.form['importance']))
         else:
             web_db.executevar("INSERT INTO notes VALUES(?,?,NULL,NULL,'False','False',?,?)",(request.form['content'],datetime.now().strftime('%Y-%m-%d'),request.form['category'],request.form['importance']))
-        web_db.executevar("UPDATE categories set num = num + 1 WHERE name=?",(request.form['category'],))
+        web_db.executevar("UPDATE categories SET num = num + 1 WHERE name=?",(request.form['category'],))
     return render_template('noteadd.html',names=getcats(),ip='/weblist/noteadd')
                             
 if __name__ == '__main__':

@@ -72,12 +72,10 @@ class list_database:
         return self.cur.fetchall()
 
     def executevar(self,command,operands):
-        try:
-            self.cur.execute(command,operands)
-            self.conn.commit()
-            return self.cur.fetchall()
-        except:
-            print("Database Error!")
+        self.cur.execute(command,operands)
+        self.conn.commit()
+        return self.cur.fetchall()
+
 
     def new_user(self,username,password):
         self.cur.execute("INSERT INTO accounts VALUES(?, ?)",(username, hashlib.sha256(str(password).encode()).hexdigest()))
