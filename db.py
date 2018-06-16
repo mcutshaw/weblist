@@ -14,7 +14,7 @@ class list_database:
             print("Config Error!")
             exit()
         self.connect()
-        tables = self.queryall("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = self.execute("SELECT name FROM sqlite_master WHERE type='table';")
          
 
         if(('categories',) not in tables): 
@@ -51,36 +51,26 @@ class list_database:
     def connect(self):
         self.conn = sqlite3.connect(self.db)
         self.cur = self.conn.cursor()
-    
-    def queryall(self,command):
-        try:
-            self.cur.execute(command)
-            return self.cur.fetchall()
-        except:
-            print("Database Error!")
-    
-    def queryone(self,command):
-        try:
-            self.cur.execute(command)
-            return self.cur.fetchone()
-        except:
-            print("Database Error!")
 
     def execute(self,command):
+        self.connect()
         self.cur.execute(command)
         self.conn.commit()
-        return self.cur.fetchall()
+        text_return = self.cur.fetchall()
+        self.close()
+        return text_return
 
     def executevar(self,command,operands):
+        self.connect()
         self.cur.execute(command,operands)
         self.conn.commit()
-        return self.cur.fetchall()
+        text_return = self.cur.fetchall()
+        self.close()
+        return text_return
 
 
     def new_user(self,username,password):
-        self.cur.execute("INSERT INTO accounts VALUES(?, ?)",(username, hashlib.sha256(str(password).encode()).hexdigest()))
-        self.conn.commit()
+        self.executevar("INSERT INTO accounts VALUES(?, ?)",(username, hashlib.sha256(str(password).encode()).hexdigest()))
 
     def del_user(self,username):
-        self.cur.execute("DELETE FROM accounts WHERE username=?",(username,))
-        self.conn.commit()
+        self.executevar("DELETE FROM accounts WHERE username=?",(username,))
