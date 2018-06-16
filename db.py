@@ -84,4 +84,4 @@ class list_database:
     def del_user(self,username):
         self.cur.execute("DELETE FROM accounts WHERE username=?",(username,))
         self.conn.commit()
-list_database('weblist.conf')
+list_database('/var/www/weblist/weblist.conf')

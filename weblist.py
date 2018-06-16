@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, Response
 from functools import wraps
 
 app = Flask(__name__)      
-web_db = list_database('weblist.conf')
+web_db = list_database('/var/www/weblist/weblist.conf')
 
 def check_auth(username, password):
 
