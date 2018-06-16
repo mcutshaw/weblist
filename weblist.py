@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, Response
 from functools import wraps
 
 app = Flask(__name__)      
-web_db = list_database('/var/www/weblist/weblist.conf')
+web_db = list_database('weblist.conf')
 
 def check_auth(username, password):
 
@@ -31,12 +31,14 @@ def delcat(name):
     web_db.executevar("DELETE FROM notes WHERE category=?",(name,))
 
 def delnote(rowid):
-    web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=?)",(rowid,))#HERE
+    if (web_db.executevar("SELECT completed FROM notes WHERE rowid=?",(rowid,))[0][0]) == 'False':
+        web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=?)",(rowid,))#HERE
     web_db.executevar("DELETE FROM notes WHERE rowid=?",(rowid,))
 
 
 def completenote(rowid):
-    web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=? and completed='False')",(rowid,))
+    if (web_db.executevar("SELECT completed FROM notes WHERE rowid=?",(rowid,))[0][0]) == 'False':
+        web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=? and completed='False')",(rowid,))
     web_db.executevar("UPDATE notes SET completed=?,completed_date=strftime('%Y-%m-%d','now','localtime') WHERE rowid=?",("True",rowid))
 
 
@@ -81,6 +83,7 @@ def main():
             delnote(request.form['Delete'])
         elif('Complete' in ln):
             completenote(request.form['Complete'])
+        print(request.form['action'])
         return render_template('main.html',dats=getnotes(request.form['action']),names=getcats(),ip ='/weblist',selected=request.form['action'])
                             
     return render_template('main.html',dats=getnotes('All'),names=getcats(),selected=None,ip='/weblist')
@@ -104,7 +107,6 @@ def catadd():
 def noteadd():
     if request.method == "POST":
         ln = list(request.form.keys())
-        print(ln)
         if 'hidden' in ln:
             web_db.executevar("INSERT INTO notes VALUES(?,?,NULL,?,'False','True',?,?)",(request.form['content'],datetime.now().strftime('%Y-%m-%d'),request.form['date'],request.form['category'],request.form['importance']))
         else:

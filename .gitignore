@@ -1,3 +1,5 @@
 *.conf
 database.sql
 __pycache__/db.cpython-35.pyc
+__pycache__/db.cpython-36.pyc
+__pycache__/db.cpython-36.pyc
