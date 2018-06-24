@@ -41,6 +41,17 @@ def completenote(rowid):
         web_db.executevar("UPDATE categories SET num = num - 1 WHERE name IN(SELECT category FROM notes WHERE rowid=? and completed='False')",(rowid,))
     web_db.executevar("UPDATE notes SET completed=?,completed_date=strftime('%Y-%m-%d','now','localtime') WHERE rowid=?",("True",rowid))
 
+def changecontent(content,rowid):
+    print('Content: ' + content)
+    print('Rowid: ' + str(rowid))
+    web_db.executevar("UPDATE notes SET content=? WHERE rowid=?",(content,rowid))
+
+
+def changeimportance(importance,rowid):
+    print('Importance: ' + str(importance))
+    print('Rowid: ' + str(rowid))
+    web_db.executevar("UPDATE notes SET importance=? WHERE rowid=?",(importance,rowid))
+
 
 def getnotes(cat):
     unhidenotes()
@@ -81,12 +92,16 @@ def main():
         print(request.form['action'])
         if('Delete' in ln):
             delnote(request.form['Delete'])
+        if('content' in ln):
+            changecontent(request.form['content'],request.form['rowid'])
+        if('importance' in ln):
+            changeimportance(request.form['importance'],request.form['rowid'])
         elif('Complete' in ln):
             completenote(request.form['Complete'])
         print(request.form['action'])
         return render_template('main.html',dats=getnotes(request.form['action']),names=getcats(),ip ='/weblist',selected=request.form['action'])
                             
-    return render_template('main.html',dats=getnotes('All'),names=getcats(),selected=None,ip='/weblist')
+    return render_template('main.html',dats=getnotes('All'),names=getcats(),selected='All',ip='/weblist')
 
 @app.route('/weblist/catadd',methods=["POST","GET"])
 @requires_auth

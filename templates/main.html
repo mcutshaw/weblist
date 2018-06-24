@@ -7,10 +7,13 @@
     <title>
         The List
     </title>
+    <script>
+
+    </script>
 </head>
 
 <body>
-	<script type="text/javascript" src="/nav.js"></script>
+    <script type="text/javascript" src="/nav.js"></script>
     <nav>
         <a href="/weblist/catadd"> Categories </a> |
         <a href="/weblist/noteadd"> Add Note</a>
@@ -26,7 +29,7 @@
             {% endfor %}
             <option value="Hidden" disabled="True">----------</option>
             <option value="Hidden" {% if selected=="Hidden" %} selected="selected" {% endif %}>Hidden</option>
-            <option value="Completed"  {% if selected=="Completed" %} selected="selected" {% endif %}>Completed</option>
+            <option value="Completed" {% if selected=="Completed" %} selected="selected" {% endif %}>Completed</option>
         </select>
         <noscript>
             <button action={{ip}} method="post">Submit</button>
@@ -40,15 +43,31 @@
             <th>Text</th>
             {% if detail == True %}
             <th>asd</th>
-                    {% endif %}
+            {% endif %}
             <th>Importance</th>
-                            <th>Remove</th>
+            <th>Remove</th>
         </tr>
 
         {% for dat in dats %}
         <tr>
+
             <td>
-                {{dat[0]}}
+                <form action="{{ip}}" method="post">
+
+                    <input name="content" type="text" style="border: 0; background: transparent" value="{{dat[0]}}">
+                    <input name="action" hidden="True" value="{{selected}}">
+                    <input name="rowid" hidden="True" value="{{dat[2]}}">
+                    <script>
+                        $(document).ready(function () {
+                            $("input[type='text']").each(function (index) {
+                                $(this).attr("size", $(this).val().length + 5);
+                            });
+                            $("input[type='text']").bind('keyup', function () {
+                                $(this).attr("size", $(this).val().length + 5);
+                            });
+                        });
+                    </script>
+                </form>
             </td>
             {% if detail == True %}
             <td>
@@ -56,7 +75,16 @@
             </td>
             {% endif %}
             <td>
-                {{dat[1]}}
+                <form action="{{ip}}" method="post">
+                    <input value="{{dat[1]}}" name="importance" size="1" maxlength="2" style="border: 0; background: transparent">
+                    <input name="action" hidden="True" value="{{selected}}">
+                    <input name="rowid" hidden="True" value="{{dat[2]}}">
+                    <script>
+                        $('form :input').blur(function () {
+                            $(this).closest('form').submit();
+                        });
+                    </script>
+                </form>
             </td>
             <td>
                 <form action="{{ip}}" method="post">
@@ -64,9 +92,10 @@
                     <input name="action" hidden="True" value="{{selected}}">
                 </form>
                 <form action="{{ip}}" method="post">
-                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post">Complete</button>
-                        <input name="action" hidden="True" value="{{selected}}">
+                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="margin-top: 0;">Complete</button>
+                    <input name="action" hidden="True" value="{{selected}}">
                 </form>
+
             </td>
         </tr>
         {% endfor %} {% endif %}
