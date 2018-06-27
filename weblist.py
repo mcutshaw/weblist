@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, Response
 from functools import wraps
 
 app = Flask(__name__)      
-web_db = list_database('/var/www/weblist/weblist.conf')
+web_db = list_database('/home/ste/Documents/weblist/example.conf')
 
 def check_auth(username, password):
 
@@ -46,6 +46,12 @@ def changecontent(content,rowid):
     print('Rowid: ' + str(rowid))
     web_db.executevar("UPDATE notes SET content=? WHERE rowid=?",(content,rowid))
 
+def changehidden(hidden,rowid):
+    print(hidden)
+
+def changedate(date,rowid):
+    print(date)
+
 
 def changeimportance(importance,rowid):
     print('Importance: ' + str(importance))
@@ -56,13 +62,13 @@ def changeimportance(importance,rowid):
 def getnotes(cat):
     unhidenotes()
     if cat == 'All':
-        return web_db.execute("SELECT content,importance,rowid FROM notes WHERE completed='False' AND hidden='False' ORDER BY importance DESC")
+        return web_db.execute("SELECT content,importance,rowid,hidden,hidden_date FROM notes WHERE completed='False' AND hidden='False' ORDER BY importance DESC")
     elif cat == 'Hidden':
-        return web_db.execute("SELECT content,importance,rowid FROM notes WHERE hidden='True' and completed='False' ORDER BY importance DESC")
+        return web_db.execute("SELECT content,importance,rowid,hidden,hidden_date FROM notes WHERE hidden='True' and completed='False' ORDER BY importance DESC")
     elif cat == 'Completed':
-        return web_db.execute("SELECT content,importance,rowid FROM notes WHERE completed='True' ORDER BY importance DESC")
+        return web_db.execute("SELECT content,importance,rowid,hidden,hidden_date FROM notes WHERE completed='True' ORDER BY importance DESC")
     else:
-        return web_db.executevar("SELECT content,importance,rowid FROM notes WHERE hidden='False' and category=? and completed='False' ORDER BY importance DESC",(cat,))
+        return web_db.executevar("SELECT content,importance,rowid,hidden,hidden_date FROM notes WHERE hidden='False' and category=? and completed='False' ORDER BY importance DESC",(cat,))
 
 
 def unhidenotes():
@@ -92,10 +98,13 @@ def main():
         print(request.form['action'])
         if('Delete' in ln):
             delnote(request.form['Delete'])
-        if('content' in ln):
+        elif('content' in ln):
             changecontent(request.form['content'],request.form['rowid'])
-        if('importance' in ln):
+        elif('importance' in ln):
             changeimportance(request.form['importance'],request.form['rowid'])
+        elif ('hidden' in ln):
+            changehidden(request.form['hidden'],request.form['rowid'])
+            changedate(request.form['date'],request.form['rowid'])
         elif('Complete' in ln):
             completenote(request.form['Complete'])
         print(request.form['action'])
