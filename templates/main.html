@@ -45,12 +45,12 @@
             <th>asd</th>
             {% endif %}
             <th>Importance</th>
+            <th>Hidden</th>
             <th>Remove</th>
         </tr>
 
         {% for dat in dats %}
         <tr>
-
             <td>
                 <form action="{{ip}}" method="post">
 
@@ -74,12 +74,29 @@
                 asd
             </td>
             {% endif %}
+
             <td>
                 <form action="{{ip}}" method="post">
                     <input value="{{dat[1]}}" name="importance" size="1" maxlength="2" style="border: 0; background: transparent">
                     <input name="action" hidden="True" value="{{selected}}">
                     <input name="rowid" hidden="True" value="{{dat[2]}}">
                     <script>
+                        $('form :input').blur(function () {
+                            $(this).closest('form').submit();
+                        });
+                    </script>
+                </form>
+            </td>
+            <td>
+                <form action="{{ip}}" method="post">
+                    <input name="rowid"  {% if dat[3] == "True" %} hidden="True" {% endif %}  value="{{dat[2]}}">
+                    <input type="checkbox" name="hidden" id="hidden" {% if dat[3] == "True" %} checked {% endif %}>
+                    <input type="date" id="date" name="date" value={{dat[4]}}>
+                    <script>
+                        $('#date').hide();
+                        $('#hidden').click(function () {
+                            $('#date')[this.checked ? "show" : "hide"]();
+                        });
                         $('form :input').blur(function () {
                             $(this).closest('form').submit();
                         });
