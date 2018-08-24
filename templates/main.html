@@ -51,7 +51,7 @@
             {% endif %}
             <th>Importance</th>
             <th>Hidden</th>
-            <th>Remove</th>
+            <th style="text-align:center">Remove</th>
         </tr>
 
         {% for dat in dats %}
@@ -97,17 +97,18 @@
                 </script>
             </td>
             <td>
-                <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post">Update</button>
-                </form>
-                <form action="{{ip}}" method="post">
-                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post">Delete</button>
-                    <input name="action" hidden="True" value="{{selected}}">
-                </form>
-                <form action="{{ip}}" method="post">
-                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="margin-top: 0;">Complete</button>
-                    <input name="action" hidden="True" value="{{selected}}">
-                </form>
-
+                <div style="margin: 0 auto; width:50%">
+                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post">Update</button>
+                    </form>
+                    <form action="{{ip}}" method="post" style="size:0px;margin: auto;float: left">
+                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post">Delete</button>
+                        <input name="action" hidden="True" value="{{selected}}">
+                    </form>
+                    <form action="{{ip}}" method="post" style="size:0px;margin: auto;float:left">
+                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="margin: 0 10px">Complete</button>
+                        <input name="action" hidden="True" value="{{selected}}">
+                    </form>
+                </div>
             </td>
         </tr>
         {% endfor %} {% endif %}
