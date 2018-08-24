@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, Response
 from functools import wraps
 
 app = Flask(__name__)      
-web_db = list_database('/home/ste/Documents/weblist/example.conf')
+web_db = list_database('C:\\Users\\Mike\\Documents\\Owncloud\\Share\\Documents\\Programs\\weblist\\weblist.conf')
 
 def check_auth(username, password):
 
@@ -47,17 +47,17 @@ def changecontent(content,rowid):
     web_db.executevar("UPDATE notes SET content=? WHERE rowid=?",(content,rowid))
 
 def changehidden(hidden,rowid):
-    print(hidden)
+    print('Hidden: ', hidden)
+    web_db.executevar("UPDATE notes SET hidden=? WHERE rowid=?",(hidden,rowid))
 
-def changedate(date,rowid):
-    print(date)
-
+def changehiddendate(date,rowid):
+    print('Date: ', date)
+    web_db.executevar("UPDATE notes SET hidden_date=? WHERE rowid=?",(date,rowid))
 
 def changeimportance(importance,rowid):
     print('Importance: ' + str(importance))
     print('Rowid: ' + str(rowid))
     web_db.executevar("UPDATE notes SET importance=? WHERE rowid=?",(importance,rowid))
-
 
 def getnotes(cat):
     unhidenotes()
@@ -98,16 +98,19 @@ def main():
         print(request.form['action'])
         if('Delete' in ln):
             delnote(request.form['Delete'])
-        elif('content' in ln):
+        if('content' in ln):
             changecontent(request.form['content'],request.form['rowid'])
-        elif('importance' in ln):
+        if('importance' in ln):
             changeimportance(request.form['importance'],request.form['rowid'])
-        elif ('hidden' in ln):
-            changehidden(request.form['hidden'],request.form['rowid'])
-            changedate(request.form['date'],request.form['rowid'])
-        elif('Complete' in ln):
+        if ('hidden' in ln):
+            changehidden('True',request.form['rowid'])
+            changehiddendate(request.form['date'],request.form['rowid'])
+        elif ('date' in ln):
+            changehidden('False',request.form['rowid'])
+        if('Complete' in ln):
             completenote(request.form['Complete'])
         print(request.form['action'])
+        print("Notes: ", getnotes(request.form['action']))
         return render_template('main.html',dats=getnotes(request.form['action']),names=getcats(),ip ='/weblist',selected=request.form['action'])
                             
     return render_template('main.html',dats=getnotes('All'),names=getcats(),selected='All',ip='/weblist')

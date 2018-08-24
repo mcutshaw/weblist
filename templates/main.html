@@ -8,7 +8,12 @@
         The List
     </title>
     <script>
-
+        $('form .importance').blur(function () {
+            $(this).closest('form').submit();
+        });
+        $('form .date').blur(function () {
+            $(this).closest('form').submit();
+        });
     </script>
 </head>
 
@@ -55,8 +60,7 @@
                 <form action="{{ip}}" method="post">
 
                     <input name="content" type="text" style="border: 0; background: transparent" value="{{dat[0]}}">
-                    <input name="action" hidden="True" value="{{selected}}">
-                    <input name="rowid" hidden="True" value="{{dat[2]}}">
+
                     <script>
                         $(document).ready(function () {
                             $("input[type='text']").each(function (index) {
@@ -67,7 +71,6 @@
                             });
                         });
                     </script>
-                </form>
             </td>
             {% if detail == True %}
             <td>
@@ -76,34 +79,26 @@
             {% endif %}
 
             <td>
-                <form action="{{ip}}" method="post">
-                    <input value="{{dat[1]}}" name="importance" size="1" maxlength="2" style="border: 0; background: transparent">
-                    <input name="action" hidden="True" value="{{selected}}">
-                    <input name="rowid" hidden="True" value="{{dat[2]}}">
-                    <script>
-                        $('form :input').blur(function () {
-                            $(this).closest('form').submit();
-                        });
-                    </script>
-                </form>
+                <input value="{{dat[1]}}" name="importance" size="1" maxlength="2" style="border: 0; background: transparent">
+
             </td>
             <td>
-                <form action="{{ip}}" method="post">
-                    <input name="rowid"  {% if dat[3] == "True" %} hidden="True" {% endif %}  value="{{dat[2]}}">
-                    <input type="checkbox" name="hidden" id="hidden" {% if dat[3] == "True" %} checked {% endif %}>
-                    <input type="date" id="date" name="date" value={{dat[4]}}>
-                    <script>
-                        $('#date').hide();
-                        $('#hidden').click(function () {
-                            $('#date')[this.checked ? "show" : "hide"]();
-                        });
-                        $('form :input').blur(function () {
-                            $(this).closest('form').submit();
-                        });
-                    </script>
-                </form>
+                <!-- <input name="rowid"  {% if dat[3] == "True" %} hidden="True" {% endif %}  value="{{dat[2]}}"> -->
+                <input name="rowid" hidden="True" value="{{dat[2]}}">
+                <input type="checkbox" name="hidden" id="hidden{{dat[2]}}" {% if dat[3]=="True" %} checked {% endif %}>
+                <input type="date" id="date{{dat[2]}}" name="date" {% if dat[3]=="True" %} hidden="True" {% endif %} value={{dat[4]}}>
+                <input name="action" hidden="True" value="{{selected}}">
+                <script>    
+                    $('#date{{dat[2]}}').hide()
+                    $('#hidden{{dat[2]}}').click(function () {
+                        $('#date{{dat[2]}}')[this.checked ? "show" : "hide"]();
+                    });
+
+                </script>
             </td>
             <td>
+                <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post">Update</button>
+                </form>
                 <form action="{{ip}}" method="post">
                     <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post">Delete</button>
                     <input name="action" hidden="True" value="{{selected}}">

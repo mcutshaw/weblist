@@ -1,5 +1,6 @@
 *.conf
 *.ini
+*.json
 
 database.sql
 
