@@ -59,9 +59,9 @@
             <td>
                 <form action="{{ip}}" method="post">
 
-                    <input name="content" type="text" style="border: 0; background: transparent" value="{{dat[0]}}">
-
-                    <script>
+                    <textarea name="content" type="text" style="width: 100%;height: 100%; border: 0; background: transparent">{{dat[0]}}</textarea>
+                    <!-- outdated, for input  -->
+                    <!-- <script>
                         $(document).ready(function () {
                             $("input[type='text']").each(function (index) {
                                 $(this).attr("size", $(this).val().length + 5);
@@ -70,7 +70,7 @@
                                 $(this).attr("size", $(this).val().length + 5);
                             });
                         });
-                    </script>
+                    </script> -->
             </td>
             {% if detail == True %}
             <td>
@@ -97,15 +97,15 @@
                 </script>
             </td>
             <td>
-                <div style="margin: 0 auto; width:50%">
-                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post">Update</button>
+                <div style="margin: 0 auto; width:50%;">
+                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post" style="">Update</button>
                     </form>
-                    <form action="{{ip}}" method="post" style="size:0px;margin: auto;float: left">
+                    <form action="{{ip}}" method="post" style="margin:5px 0px">
                         <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post">Delete</button>
                         <input name="action" hidden="True" value="{{selected}}">
                     </form>
-                    <form action="{{ip}}" method="post" style="size:0px;margin: auto;float:left">
-                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="margin: 0 10px">Complete</button>
+                    <form action="{{ip}}" method="post" style="margin:0px">
+                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="">Complete</button>
                         <input name="action" hidden="True" value="{{selected}}">
                     </form>
                 </div>
