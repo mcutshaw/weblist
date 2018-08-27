@@ -28,6 +28,7 @@
     </h1>
     <form action={{ip}} id=selector method="post">
         <select name="action" id="action" onchange="this.form.submit()">
+            <option value="None" disabled="disabled" {% if selected=="None" %}  selected="selected" {% endif %}>None</option>
             <option value="All" {% if selected=="All" %} selected="selected" {% endif %}>All</option>
             {% for name in names %}
             <option value={{name[0]}} {% if selected==name[0] %} selected="selected" {% endif %}>{{name[0]}}</option>

@@ -113,7 +113,7 @@ def main():
         print("Notes: ", getnotes(request.form['action']))
         return render_template('main.html',dats=getnotes(request.form['action']),names=getcats(),ip ='/weblist',selected=request.form['action'])
                             
-    return render_template('main.html',dats=getnotes('All'),names=getcats(),selected='All',ip='/weblist')
+    return render_template('main.html',dats=getnotes('None'),names=getcats(),selected='None',ip='/weblist')
 
 @app.route('/weblist/catadd',methods=["POST","GET"])
 @requires_auth
