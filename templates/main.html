@@ -97,16 +97,16 @@
 
                 </script>
             </td>
-            <td>
-                <div style="margin: 0 auto; width:50%;">
-                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post" style="">Update</button>
+            <td style="width:30%">
+                <div style="margin: 0px 0px 0px 20%">
+                    <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Update" method="post" style="margin:2px 2px;float:left">Update</button>
                     </form>
-                    <form action="{{ip}}" method="post" style="margin:5px 0px">
-                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post">Delete</button>
+                    <form action="{{ip}}" method="post" style="margin:0px;float:left">
+                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Delete" method="post" style="margin:2px 2px;float:left">Delete</button>
                         <input name="action" hidden="True" value="{{selected}}">
                     </form>
-                    <form action="{{ip}}" method="post" style="margin:0px">
-                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="">Complete</button>
+                    <form action="{{ip}}" method="post" style="margin:0px;float:left">
+                        <button class=btn action="{{ip}}" value="{{dat[2]}}" name="Complete" method="post" style="margin:2px 2px;float:left">Complete</button>
                         <input name="action" hidden="True" value="{{selected}}">
                     </form>
                 </div>
